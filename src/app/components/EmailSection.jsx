@@ -55,11 +55,23 @@ const EmailSection = () => {
           open. Whether you have a question or just want to say hi, I&apos;ll
           try my best to get back to you!
         </p>
+        <div className="contact-info mb-4 space-y-2">
+          <div className="flex items-center gap-2 text-[#ADB7BE]">
+            <span>📍</span>
+            <span>India</span>
+          </div>
+          <div className="flex items-center gap-2 text-[#ADB7BE]">
+            <span>📧</span>
+            <a href="mailto:samarthmishra46@gmail.com" className="hover:text-white transition-colors">
+              samarthmishra46@gmail.com
+            </a>
+          </div>
+        </div>
         <div className="socials flex flex-row gap-2">
-          <Link href="github.com">
+          <Link href="https://github.com/samarthmishra46">
             <Image src={GithubIcon} alt="Github Icon" />
           </Link>
-          <Link href="linkedin.com">
+          <Link href="https://linkedin.com/in/samarthmishra46">
             <Image src={LinkedinIcon} alt="Linkedin Icon" />
           </Link>
         </div>
