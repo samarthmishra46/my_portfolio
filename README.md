@@ -1,31 +1,54 @@
-# Portfolio Website
+# Samarth Mishra — Portfolio
 
-This is a portfolio website built with Next.js and Tailwind CSS. It showcases your skills, projects, and achievements in an elegant and responsive design.
+A Next.js + Tailwind portfolio with a **data-driven** content layer, a dedicated
+**Freelancing** page with **geo-localized pricing**, and a password-protected
+**admin dashboard** for contact messages and service requests (stored in MongoDB).
 
-## Installation
+## Setup
 
-1. Clone the repository: `git clone https://github.com/samarthmishra46/my_portfolio.git`
-2. Navigate to the project directory: `cd my_portfolio`
-3. Install the dependencies: `npm install`
+1. Install deps: `npm install`
+2. Copy env: `cp .env.example .env.local` and fill in the values (see below).
+3. Run: `npm run dev` → open http://localhost:3000
 
-## Usage
+### Environment variables (`.env.local`)
 
-1. Start the development server: `npm run dev`
-2. Open your browser and visit `http://localhost:3000` to view the website.
+| Variable        | Purpose                                              |
+| --------------- | ---------------------------------------------------- |
+| `MONGODB_URI`   | MongoDB connection string (contacts + requests)      |
+| `MONGODB_DB`    | _(optional)_ overrides the DB name from the URI      |
+| `ADMIN_USER`    | Admin dashboard username                              |
+| `ADMIN_PASS`    | Admin dashboard password                             |
+| `ADMIN_SECRET`  | Long random string used to sign the admin cookie     |
 
-## Dependencies
+## Editing content (no component code needed)
 
-The following dependencies are required for this project:
+All content lives in [`src/data/`](src/data/). Each file is a plain array/object:
 
-- Next.js: A React framework for server-side rendering and static site generation.
-- Tailwind CSS: A highly customizable CSS framework.
-- React: A JavaScript library for building user interfaces.
-- React Icons: A collection of popular icons for React projects.
-- TypeScript: A typed superset of JavaScript that compiles to plain JavaScript.
-- Resend: Resend is the email API for developers.
+- **Add a project** → append an object to [`src/data/projects.js`](src/data/projects.js).
+  Set `gitUrl`/`liveUrl` to `"#"` to hide those buttons. `tags` create the filter chips.
+- **Add a freelancing service** → append to [`src/data/services.js`](src/data/services.js)
+  with a `basePriceINR`. Pricing localizes automatically.
+- Skills, experience, education, achievements, and your name/links/tagline each
+  have their own file (`skills.js`, `experience.js`, `education.js`,
+  `achievements.js`, `site.js`).
+
+Drop your résumé at `public/Samarth_CV.pdf` (or change `resumeUrl` in `site.js`).
+
+## How geo-pricing works
+
+Base prices are in **INR**. The `/api/pricing` route detects the visitor's
+country (Vercel geo header, falling back to `ipwho.is`) and, for **non-India**
+visitors, **adds 20%** then converts INR → their local currency at live rates
+(`open.er-api.com`). Any lookup failure falls back safely to INR.
+See [`src/lib/pricing.js`](src/lib/pricing.js) and
+[`src/app/api/pricing/route.js`](src/app/api/pricing/route.js).
+
+## Admin dashboard
+
+Visit `/admin`. If not logged in you're redirected to `/admin/login`. Sign in
+with `ADMIN_USER` / `ADMIN_PASS` to see two tabs — **Contacts** and **Service
+Requests** — newest first. The route is not linked anywhere public.
 
 ## License
 
-This project is licensed under the [MIT License](https://opensource.org/licenses/MIT). Feel free to use, modify, and distribute the code as per the terms of the license.
-
-# my_portfolio
+[MIT](https://opensource.org/licenses/MIT).
